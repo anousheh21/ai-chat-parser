@@ -71,13 +71,39 @@ const decodeTurboStream = async(parsedPayload: string) => {
     return decoded;
 }
 
+// NEXT STEPS: I think this works, but you actually need to double check for different conversations, to ensure it is accurate
 const usefulConversationBits = (decoded: Decoded) => {
     const linearConversation = decoded.value.loaderData["routes/share.$shareId.($action)"].serverResponse.data.linear_conversation;
 
-    return linearConversation;
+    const conversationLength = linearConversation.length;
+    const conversationArray: ConversationItem[] = [];
+
+    for(let i = 0; i < conversationLength; i++) {
+       if (linearConversation[i]?.message && linearConversation[i]?.message?.author) {
+            const conversationItemRole = linearConversation[i].message.author.role;
+            const conversationItemMessage = linearConversation[i].message.content.parts;
+
+            if((conversationItemRole == "user" || conversationItemRole == "assistant") && conversationItemMessage && conversationItemMessage != "Original custom instructions no longer available") {
+                const conversationItem: ConversationItem = {
+                    role: conversationItemRole,
+                    message: conversationItemMessage
+                }
+
+                conversationArray.push(conversationItem);
+            }
+       }
+
+    }
+
+    return conversationArray;
 }
 
-type LinearConversation = unknown[];
+type ConversationItem = {
+    role: "user" | "assistant",
+    message: string
+}
+
+type LinearConversation = any[];
 
 type Data = {
     linear_conversation: LinearConversation
