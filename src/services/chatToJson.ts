@@ -43,7 +43,11 @@ const decodeTurboStream = async(payload: string) => {
 }
 
 const jsonChatCleanup = (decoded: Decoded) => {
-    const linearConversation = decoded.value.loaderData["routes/share.$shareId.($action)"].serverResponse.data.linear_conversation;
+    const linearConversation = decoded?.value?.loaderData["routes/share.$shareId.($action)"]?.serverResponse?.data?.linear_conversation;
+
+    if (!linearConversation) {
+        throw new Error("Conversation not found");
+    }
 
     const conversationLength = linearConversation.length;
     const conversationArray: ConversationItem[] = [];

@@ -5,6 +5,7 @@ import { checkValidChatGPTShareLink } from "../services/checkValidChatGPTShareLi
 export const chatControllerPost = async (req: Request, res: Response) => {
     const chatGPTShareLink = req.body.chatGPTShareLink;
     const isValidUrl = await checkValidChatGPTShareLink(chatGPTShareLink);
+    // res.status(200).json(isValidUrl);
 
     if (!isValidUrl) {
         res.status(404).json({ error: `${chatGPTShareLink} is an invalid ChatGPT share link`});
