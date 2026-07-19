@@ -2,8 +2,6 @@ import { decode } from "turbo-stream";
 import type { ConversationItem } from "../types/conversationItem.js";
 import type { Decoded } from "../types/decodedChatTypes.js";
 
-// ORGANISE THIS PAGE, MAYBE IN TO SEVERAL SEPARATE ONES, ONCE YOU'VE FINISHED. IT'S A MESS BC I CARED ABOUT THE LOGIC FIRST! ALSO FIX VARIABLE NAMES AND DO A GENERAL TIDY UP!
-
 export const chatLinkToJson = async (chatGPTShareLink: URL) => {
     const response = await fetch(chatGPTShareLink);
 
@@ -19,6 +17,7 @@ export const chatLinkToJson = async (chatGPTShareLink: URL) => {
     const payload =  extractTurboStreamSerialization(data);
     const decoded = await decodeTurboStream(payload);
     const jsonChat = jsonChatCleanup(decoded);
+
     return jsonChat;
 }
 
