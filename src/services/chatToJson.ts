@@ -1,18 +1,10 @@
 import { decode } from "turbo-stream";
 import type { ConversationItem } from "../types/conversationItem.js";
 import type { Decoded } from "../types/decodedChatTypes.js";
+import { getPageSource } from "./getPageSource.js";
 
-export const chatLinkToJson = async (chatGPTShareLink: URL) => {
-    const response = await fetch(chatGPTShareLink);
-
-    if (!response.ok) {
-        const errorBody = await response.text();
-        console.log(errorBody);
-
-        throw new Error(`Request failed with status ${response.status}`);
-    }
-
-    const data = await response.text();
+export const chatLinkToJson = async (chatGPTShareLink: string) => {
+    const data = await getPageSource(chatGPTShareLink);
 
     const payload =  extractTurboStreamSerialization(data);
     const decoded = await decodeTurboStream(payload);
@@ -51,7 +43,11 @@ const decodeTurboStream = async(payload: string) => {
 }
 
 const jsonChatCleanup = (decoded: Decoded) => {
-    const linearConversation = decoded.value.loaderData["routes/share.$shareId.($action)"].serverResponse.data.linear_conversation;
+    const linearConversation = decoded?.value?.loaderData["routes/share.$shareId.($action)"]?.serverResponse?.data?.linear_conversation;
+
+    if (!linearConversation) {
+        throw new Error("Conversation not found");
+    }
 
     const conversationLength = linearConversation.length;
     const conversationArray: ConversationItem[] = [];
