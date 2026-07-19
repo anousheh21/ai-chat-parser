@@ -1,5 +1,6 @@
-import type { Server } from "node:http";
 import { decode } from "turbo-stream";
+import type { ConversationItem } from "../types/conversationItem.js";
+import type { Decoded } from "../types/decodedChatTypes.js";
 
 // ORGANISE THIS PAGE, MAYBE IN TO SEVERAL SEPARATE ONES, ONCE YOU'VE FINISHED. IT'S A MESS BC I CARED ABOUT THE LOGIC FIRST! ALSO FIX VARIABLE NAMES AND DO A GENERAL TIDY UP!
 
@@ -96,35 +97,4 @@ const usefulConversationBits = (decoded: Decoded) => {
     }
 
     return conversationArray;
-}
-
-type ConversationItem = {
-    role: "user" | "assistant",
-    message: string
-}
-
-type LinearConversation = any[];
-
-type Data = {
-    linear_conversation: LinearConversation
-}
-
-type ServerResponse = {
-    data: Data
-}
-
-type RouteIdentifier = {
-    serverResponse: ServerResponse
-}
-
-type LoaderData = {
-    ["routes/share.$shareId.($action)"]: RouteIdentifier
-}
-
-type Value = {
-    loaderData: LoaderData
-}
-
-type Decoded = {
-    value: Value
 }
