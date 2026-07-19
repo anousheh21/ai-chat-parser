@@ -1,3 +1,5 @@
+import { getPageSource } from "./getPageSource.js";
+
 export const checkValidChatGPTShareLink = async (chatGPTShareLink: string): Promise<boolean> => {
     const shareLinkStart = "https://chatgpt.com/share/";
 
@@ -17,18 +19,8 @@ export const checkValidChatGPTShareLink = async (chatGPTShareLink: string): Prom
 
 // TODO: Ask Codex if there is any possibility that this will block valid links or allow through invalid links
 
-// TODO: tidy up. This may be a bit repetitive - is all this code actually necessary?
 const checkValidPageContent = async (chatGPTShareLink: string, chatIdentifier: string): Promise<boolean> => {
-    const response = await fetch(chatGPTShareLink);
-
-    if (!response.ok) {
-        const errorBody = await response.text();
-        console.log(errorBody);
-
-        throw new Error(`Request failed with status ${response.status}`);
-    }
-
-    const data = await response.text();
+    const data = await getPageSource(chatGPTShareLink);
 
     const firstEnqueueCall = "window.__reactRouterContext.streamController.enqueue(";
     const firstEnqueueCallStartIndex = data.indexOf(firstEnqueueCall);
@@ -39,8 +31,6 @@ const checkValidPageContent = async (chatGPTShareLink: string, chatIdentifier: s
 
     const invalidIdentifierMessage = `Can't load shared conversation ${chatIdentifier}`;
     const invalidIdentifierMessageStartIndex = data.indexOf(invalidIdentifierMessage);
-
-    // TODO: There is a problem with this though, because what if, in a working chat, someone writes out the thing in invalidIdentifierMessage?
 
     if (invalidIdentifierMessageStartIndex != -1) {
         return false;
