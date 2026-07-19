@@ -4,14 +4,15 @@ import { checkValidChatGPTShareLink } from "../services/checkValidChatGPTShareLi
 
 export const chatControllerPost = async (req: Request, res: Response) => {
     const chatGPTShareLink = req.body.chatGPTShareLink;
+    const isValidUrl = await checkValidChatGPTShareLink(chatGPTShareLink);
 
-    // Testing that the checkValidUrl function works
-    const validUrl = await checkValidChatGPTShareLink(chatGPTShareLink);
-    res.status(200).json(validUrl);
+    if (!isValidUrl) {
+        res.status(404).json({ error: `${chatGPTShareLink} is an invalid ChatGPT share link`});
+        return;
+    }
 
-    // TODO: Uncomment this, as this is the actual app flow. It is commented for now, so I can test the checkValidUrl function.
-    // const jsonChat = await chatLinkToJson(chatGPTShareLink);
+    const jsonChat = await chatLinkToJson(chatGPTShareLink);
 
-    // // This is what we are sending back, so this needs to be the chat as a JSON array
-    // res.status(200).json(jsonChat);
+    // This is what we are sending back, so this needs to be the chat as a JSON array
+    res.status(200).json(jsonChat);
 }

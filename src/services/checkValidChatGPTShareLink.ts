@@ -17,6 +17,7 @@ export const checkValidChatGPTShareLink = async (chatGPTShareLink: string): Prom
 
 // TODO: Ask Codex if there is any possibility that this will block valid links or allow through invalid links
 
+// TODO: tidy up. This may be a bit repetitive - is all this code actually necessary?
 const checkValidPageContent = async (chatGPTShareLink: string, chatIdentifier: string): Promise<boolean> => {
     const response = await fetch(chatGPTShareLink);
 
