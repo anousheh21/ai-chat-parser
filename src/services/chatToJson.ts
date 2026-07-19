@@ -2,7 +2,7 @@ import { decode } from "turbo-stream";
 import type { ConversationItem } from "../types/conversationItem.js";
 import type { Decoded } from "../types/decodedChatTypes.js";
 
-export const chatLinkToJson = async (chatGPTShareLink: URL) => {
+export const chatLinkToJson = async (chatGPTShareLink: string) => {
     const response = await fetch(chatGPTShareLink);
 
     if (!response.ok) {
