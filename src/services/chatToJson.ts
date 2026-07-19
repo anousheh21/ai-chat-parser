@@ -4,12 +4,7 @@ import type { Decoded } from "../types/decodedChatTypes.js";
 
 // ORGANISE THIS PAGE, MAYBE IN TO SEVERAL SEPARATE ONES, ONCE YOU'VE FINISHED. IT'S A MESS BC I CARED ABOUT THE LOGIC FIRST! ALSO FIX VARIABLE NAMES AND DO A GENERAL TIDY UP!
 
-export const chatToJson = async (chatGPTShareLink: URL) => {
-    const json = await getJSON(chatGPTShareLink);
-    return json;
-}
-
-const getJSON = async (chatGPTShareLink: URL) => {
+export const chatLinkToJson = async (chatGPTShareLink: URL) => {
     const response = await fetch(chatGPTShareLink);
 
     if (!response.ok) {
@@ -22,43 +17,27 @@ const getJSON = async (chatGPTShareLink: URL) => {
     const data = await response.text();
 
     const payload =  extractTurboStreamSerialization(data);
-    const parsedPayload =  extractJson(payload);
-    const decoded = await decodeTurboStream(parsedPayload);
-    const useful = usefulConversationBits(decoded);
-    return useful;
-    // return decoded;
-    // return data;
-}
-
-const extractShareId = (chatGPTShareLink: URL) => {
-
+    const decoded = await decodeTurboStream(payload);
+    const jsonChat = jsonChatCleanup(decoded);
+    return jsonChat;
 }
 
 const extractTurboStreamSerialization = (pageSource: string) => {
-
-    // Find index of first payload character (first ")
     const firstEnqueueCall = "window.__reactRouterContext.streamController.enqueue(";
     const firstEnqueueCallStartIndex = pageSource.indexOf(firstEnqueueCall);
     const payloadStartIndex = firstEnqueueCallStartIndex + firstEnqueueCall.length;
 
-    // Find index of last payload character (last ")
     let currentIndex = payloadStartIndex + 1;
     while (pageSource[currentIndex] != "\"" || pageSource[currentIndex - 1] == "\\") {
         currentIndex++;
     }
 
-    // Payload contains the serialized turbo stream we're after
     const payload = pageSource.slice(payloadStartIndex, currentIndex + 1);
-   
     return payload;
 }
 
-const extractJson = (payload: string) => {
-    const json = JSON.parse(payload);
-    return json;
-}
-
-const decodeTurboStream = async(parsedPayload: string) => {
+const decodeTurboStream = async(payload: string) => {
+    const parsedPayload = JSON.parse(payload);
     const textToBytesEncoder = new TextEncoder();
 
     const stream = new ReadableStream<Uint8Array>({
@@ -72,8 +51,7 @@ const decodeTurboStream = async(parsedPayload: string) => {
     return decoded;
 }
 
-// NEXT STEPS: I think this works, but you actually need to double check for different conversations, to ensure it is accurate
-const usefulConversationBits = (decoded: Decoded) => {
+const jsonChatCleanup = (decoded: Decoded) => {
     const linearConversation = decoded.value.loaderData["routes/share.$shareId.($action)"].serverResponse.data.linear_conversation;
 
     const conversationLength = linearConversation.length;

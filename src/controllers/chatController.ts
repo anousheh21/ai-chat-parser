@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { chatToJson } from "../services/chatToJson.js";
+import { chatLinkToJson } from "../services/chatToJson.js";
 import { checkValidUrl } from "../services/checkValidUrl.js";
 
 export const chatControllerPost = async (req: Request, res: Response) => {
@@ -8,9 +8,8 @@ export const chatControllerPost = async (req: Request, res: Response) => {
 
     // Functionality goes here for turning the share link into JSON
     checkValidUrl(chatGPTShareLink);
-    const json = await chatToJson(chatGPTShareLink);
+    const jsonChat = await chatLinkToJson(chatGPTShareLink);
 
     // This is what we are sending back, so this needs to be the chat as a JSON array
-    // res.status(200).json(chatGPTShareLink);
-    res.status(200).json(json);
+    res.status(200).json(jsonChat);
 }
