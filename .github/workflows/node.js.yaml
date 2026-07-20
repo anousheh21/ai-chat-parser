@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-  Code Checks:
+  check_code:
     runs-on: ubuntu-latest
 
     steps:
