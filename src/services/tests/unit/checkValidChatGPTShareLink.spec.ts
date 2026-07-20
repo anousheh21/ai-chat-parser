@@ -1,8 +1,8 @@
 import { test, expect, vi, beforeEach } from "vitest";
-import { checkValidChatGPTShareLink } from "../checkValidChatGPTShareLink.js";
-import { getPageSource } from "../getPageSource.js";
+import { checkValidChatGPTShareLink } from "../../checkValidChatGPTShareLink.js";
+import { getPageSource } from "../../getPageSource.js";
 
-vi.mock("../getPageSource.js");
+vi.mock("../../getPageSource.js");
 
 beforeEach(() => {
     vi.mocked(getPageSource).mockReset();

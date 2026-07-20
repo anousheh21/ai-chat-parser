@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { chatLinkToJson } from "../chatToJson.js";
+import { chatLinkToJson } from "../../chatToJson.js";
 
 test("Generate correct JSON chat from share link", async () => {
     const shareLink = "https://chatgpt.com/share/6a5cef4a-90f0-83ed-baec-990096809dd4";
