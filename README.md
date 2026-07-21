@@ -1,6 +1,6 @@
 # ai-chat-parser
 
-`ai-chat-parser` converts ChatGPT conversations to JSON, enabling them to be used easily in software projects.
+`ai-chat-parser` converts ChatGPT conversations to into JSON, enabling them to be used easily in software projects.
 
 
 ## Requirements
