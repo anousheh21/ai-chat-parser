@@ -1,5 +1,5 @@
 {
-  "name": "ai-chat-to-json",
+  "name": "ai-chat-parser",
   "version": "1.0.0",
   "description": "Converts ChatGPT conversations to JSON, enabling them to be used easily in software projects",
   "main": "index.js",
