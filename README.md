@@ -54,7 +54,7 @@ The request body must contain a ChatGPT share link:
 
 ```json
 {
-  "chatGPTShareLink": "https://chatgpt.com/share/your-share-id"
+  "chatGPTShareLink": "https://chatgpt.com/share/share-id"
 }
 ```
 
