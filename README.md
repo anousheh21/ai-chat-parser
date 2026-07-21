@@ -50,7 +50,7 @@ curl -X POST http://localhost:4000/v1/chat-parser \
 POST /v1/chat-parser
 ```
 
-The request body must contain a public ChatGPT share link:
+The request body must contain a ChatGPT share link:
 
 ```json
 {
