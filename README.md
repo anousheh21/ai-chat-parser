@@ -1,6 +1,6 @@
 # ai-chat-parser
 
-`ai-chat-parser` converts ChatGPT conversations into JSON, enabling them to be used easily in software projects.
+`ai-chat-parser` converts ChatGPT conversations into JSON, enabling them to be used easily in software projects. It is available as a node package or self-hosted API.
 
 
 ## Requirements
@@ -8,8 +8,19 @@
 - Node.js 22.12.0 or later
 - npm
 
+## Package
 
-## Getting Started
+### Installation
+
+
+
+### Usage
+
+
+
+## API
+
+### Getting Started
 
 Clone the repository:
 
@@ -44,7 +55,7 @@ curl -X POST http://localhost:4000/v1/chat-parser \
 ```
 
 
-## REST API Reference
+### REST API Reference
 
 ```http
 POST /v1/chat-parser
