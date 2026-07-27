@@ -1,6 +1,6 @@
 # ai-chat-parser
 
-`ai-chat-parser` converts ChatGPT conversations into JSON, enabling them to be used easily in software projects. It is available as a node package or self-hosted API.
+`ai-chat-parser` converts ChatGPT conversations into JSON, enabling them to be used easily in software projects. It is available as a node package or self-hosted REST API.
 
 
 ## Requirements
@@ -12,11 +12,51 @@
 
 ### Installation
 
-
+Install with npm:
+```bash
+npm install ai-chat-parser
+```
 
 ### Usage
 
+```ts
+import { chatLinkToJson, checkValidChatGPTShareLink } from "ai-chat-parser";
+import type { ConversationItem } from "ai-chat-parser";
 
+async function main() {
+    const chatGPTShareLink = 'https://chatgpt.com/share/6a5cef4a-90f0-83ed-baec-990096809dd4';
+
+    try {
+        const isValidShareLink = await checkValidChatGPTShareLink(chatGPTShareLink);
+
+        if (isValidShareLink) {
+            const json: ConversationItem[] = await chatLinkToJson(chatGPTShareLink);
+            console.log(json);
+        } else  {
+            console.log("Invalid share link");
+        }
+    } catch (error) {
+        console.error("Failed to parse chat:", error);
+    }
+}
+```
+
+#### Functions
+
+`ai-chat-parser` exposes 2 functions: 
+
+- `chatLinkToJson`: accepts a valid ChatGPT share link. Accesses a ChatGPT chat via its share link, parses the chat and returns `Promise<ConversationItem[]>`.
+- `checkValidChatGPTShareLink`: accepts a string and returns `Promise<boolean>` - true if the string is a valid ChatGPT share link and false otherwise.
+
+#### Types
+
+`ai-chat-parser` exposes the `ConversationItem` type. The `chatLinkToJson` function returns an array of `ConversationItem`s.
+```ts
+type ConversationItem = {
+    role: "user" | "assistant",
+    message: string[]
+}
+```
 
 ## API
 
@@ -69,7 +109,7 @@ The request body must contain a ChatGPT share link:
 }
 ```
 
-If the share link sent is valid, the API will return  a `200 OK` response, alongside a JSON array of objects. The objects have a `role` property, which be either `user` or `assistant`, and a `message` property, which will contain the message. The JSON array returned will be ordered in the same order as the messages in the shared chat:
+If the share link sent is valid, the API will return  a `200 OK` response, alongside a JSON array of objects. The objects have a `role` property, which will be either `user` or `assistant`, and a `message` property, which will contain the message. The JSON array returned will be ordered in the same order as the messages in the shared chat:
 
 ```json
 [
