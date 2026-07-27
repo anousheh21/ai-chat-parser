@@ -79,7 +79,7 @@ Navigate to the project directory:
 cd ai-chat-parser
 ```
 
-Install project dependencies:
+Install project dependencies (do not use `npm install --omit=dev` as this will omit some dependencies that are required for the API to work successfully):
 
 ```bash
 npm install
