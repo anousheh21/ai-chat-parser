@@ -8,6 +8,7 @@
 - Node.js 22.12.0 or later
 - npm
 
+
 ## Package
 
 ### Installation
@@ -16,6 +17,7 @@ Install with npm:
 ```bash
 npm install ai-chat-parser
 ```
+
 
 ### Usage
 
@@ -41,12 +43,14 @@ async function main() {
 }
 ```
 
+
 #### Functions
 
 `ai-chat-parser` exposes 2 functions: 
 
 - `chatLinkToJson`: accepts a valid ChatGPT share link. Accesses a ChatGPT chat via its share link, parses the chat and returns `Promise<ConversationItem[]>`.
 - `checkValidChatGPTShareLink`: accepts a string and returns `Promise<boolean>` - true if the string is a valid ChatGPT share link and false otherwise.
+
 
 #### Types
 
@@ -57,6 +61,7 @@ type ConversationItem = {
     message: string[]
 }
 ```
+
 
 ## API
 
